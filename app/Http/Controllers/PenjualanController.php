@@ -13,8 +13,6 @@ class PenjualanController extends Controller
 
     public function index()
     {
-        // dd('a');
-        // $data = Penjualan::all();
         $data = Penjualan::select('penjualan.id','penjualan.id_barang', 'penjualan.jumlah', 'penjualan.total_harga', 'barang.id_barang as barang', 'barang.name', 'barang.satuan', 'barang.harga')
         ->Join('barang', 'barang.id', '=', 'penjualan.id_barang')->get();
   
@@ -30,7 +28,6 @@ class PenjualanController extends Controller
 
     public function store(Request $request)
     {
-        // dd($request);
         \Validator::make($request->all(), [
             'jumlah' => 'required|integer',
         ])->validate();
@@ -79,11 +76,7 @@ class PenjualanController extends Controller
 
     public function edit($id)
     {
-        // dd($id);
-        // $authorize = new User();
-        // $authorize->authorizeRoles([1]);
-
-
+       
         $data = Penjualan::select('penjualan.id', 'penjualan.jumlah', 'penjualan.total_harga', 'barang.id_barang as barang', 'barang.name', 'barang.satuan', 'barang.harga')
         ->Join('barang', 'barang.id', '=', 'penjualan.id_barang')->where('penjualan.id', $id)->first();
      
@@ -109,10 +102,8 @@ class PenjualanController extends Controller
             }
          
             if($request->jumlah > $barang->stok_barang){
-                // dd('masukkkkk');
                 return \Redirect::to("/penjualan")->with('error', 'Data Gagal Ditambahkan karena jumlah pembelian melebihi stook barang');
             } else {
-                // dd('editttttt');
                 $total = $request->jumlah * $barang->harga;
                 $stokbarang = $barang->stok_barang - $request->jumlah;
 
